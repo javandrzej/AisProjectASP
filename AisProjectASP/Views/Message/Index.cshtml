@@ -17,10 +17,13 @@
                     dataType: "json"
                 })
                 .done(function (data) {
+                    $("#tableId").empty();
+                    $("#tableId").append("<th> Title </th> <th> Body </th> <th> Date</th>");
                     for (i = 0; i < data.length; i++) {
                         var newDate = parseJsonDate(data[i].Date).toLocaleDateString();
                         $("#tableId").append("<tr><td>" + data[i].Title + "</td><td>" + data[i].Body + "</td><td>" + newDate + "</td></tr>");
                     }
+                    setTimeout(getData, 5000);
                 });
             }
             getData();

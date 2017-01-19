@@ -1,5 +1,7 @@
-﻿using AisProjectASP.Utils;
+﻿using AisProjectASP.Models;
+using AisProjectASP.Utils;
 using System.Linq;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace AisProjectASP.Controllers
@@ -30,6 +32,24 @@ namespace AisProjectASP.Controllers
         public JsonResult Details(int id)
         {
             return Json(cacheHelper.GetMessages().Where(i => i.Id == id), JsonRequestBehavior.AllowGet);
+        }
+
+        // POST: Message/Create
+        public void Create([FromBody]Message msg)
+        {
+            cacheHelper.SaveMessage(msg);
+        }
+
+        // POST: Message/Update/
+        public void Update([FromBody] Message msg)
+        {
+            cacheHelper.UpdateMessage(msg);
+        }
+
+        // GET: Message/Delete/id
+        public void Delete(int id)
+        {
+            cacheHelper.DeleteMessage(id);
         }
     }
 }
