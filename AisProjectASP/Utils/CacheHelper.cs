@@ -1,6 +1,7 @@
 ﻿using AisProjectASP.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Caching;
 
 namespace AisProjectASP.Utils
@@ -12,7 +13,10 @@ namespace AisProjectASP.Utils
 
         public CacheHelper()
         {
-            cache = MemoryCache.Default;
+            if (cache == null)
+            {
+                cache = MemoryCache.Default;
+            }
         }
 
         public void ClearMessages()
@@ -22,7 +26,7 @@ namespace AisProjectASP.Utils
 
         public void CreateMessages()
         {
-            cache.Add(MessageKey, Message.GetMessagesList(),
+            cache.Add(MessageKey, Message.GetMessagesList().ToList(),
                new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.UtcNow.AddHours(1) });
         }
 
@@ -35,6 +39,7 @@ namespace AisProjectASP.Utils
         {
             var messagesList = GetMessages();
             messagesList.Add(msg);
+            SetMessages(MessageKey, messagesList);
         }
 
         public void UpdateMessage(Message msg)
@@ -43,6 +48,7 @@ namespace AisProjectASP.Utils
             int index = messagesList.FindIndex(i => i.Id == msg.Id);
             messagesList.RemoveAt(index);
             messagesList.Add(msg);
+            SetMessages(MessageKey, messagesList);
         }
 
         public void DeleteMessage(int id)
