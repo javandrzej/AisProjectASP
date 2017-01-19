@@ -11,6 +11,11 @@ namespace AisProjectASP.Models
         public DateTime Date { get; set; }
         public static readonly int START_MESSAGE_SIZE = 15;
 
+        public Message()
+        {
+
+        }
+
         public Message(int id, string title, string body, DateTime date)
         {
             Id = id;
