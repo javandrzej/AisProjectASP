@@ -1,6 +1,8 @@
 ﻿using AisProjectASP.Models;
 using AisProjectASP.Utils;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -35,21 +37,39 @@ namespace AisProjectASP.Controllers
         }
 
         // POST: Message/Create
-        public void Create([FromBody]Message msg)
+        public HttpResponseMessage Create([FromBody]Message msg)
         {
-            cacheHelper.SaveMessage(msg);
+            if (msg.Body != null && msg.Id > 0)
+            {
+                cacheHelper.SaveMessage(msg);
+                return new HttpResponseMessage(HttpStatusCode.Created);
+            }
+            else
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
         }
 
         // POST: Message/Update/
-        public void Update([FromBody] Message msg)
+        public HttpResponseMessage Update([FromBody] Message msg)
         {
+            cacheHelper.UpdateMessage(msg); if (msg.Body != null && msg.Id > 0)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
             cacheHelper.UpdateMessage(msg);
+            return new HttpResponseMessage(HttpStatusCode.Created);
         }
 
         // GET: Message/Delete/id
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            if (id < 0)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
             cacheHelper.DeleteMessage(id);
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }
 }
