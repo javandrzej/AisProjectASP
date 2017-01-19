@@ -12,10 +12,7 @@ namespace AisProjectASP.Utils
 
         public CacheHelper()
         {
-            if (cache == null)
-            {
-                cache = MemoryCache.Default;
-            }
+            cache = MemoryCache.Default;
         }
 
         public void ClearMessages()
@@ -38,6 +35,26 @@ namespace AisProjectASP.Utils
         {
             var messagesList = GetMessages();
             messagesList.Add(msg);
+        }
+
+        public void UpdateMessage(Message msg)
+        {
+            var messagesList = GetMessages();
+            int index = messagesList.FindIndex(i => i.Id == msg.Id);
+            messagesList.RemoveAt(index);
+            messagesList.Add(msg);
+        }
+
+        public void DeleteMessage(int id)
+        {
+            var messagesList = GetMessages();
+            messagesList.RemoveAll(a => a.Id == id);
+            SetMessages(MessageKey, messagesList);
+        }
+
+        public void SetMessages(string key, object value)
+        {
+            cache.Set(key, value, new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.UtcNow.AddHours(1) });
         }
     }
 }
