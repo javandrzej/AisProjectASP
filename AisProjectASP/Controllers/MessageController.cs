@@ -31,6 +31,12 @@ namespace AisProjectASP.Controllers
             return Json(cacheHelper.GetMessages().OrderByDescending(i => i.Date).Skip(10), JsonRequestBehavior.AllowGet);
         }
 
+        //GET: Message/GetOlderMessages?startIndex=12&count=2
+        public JsonResult GetOlderMessagesWithParameters([FromUri] int startIndex, [FromUri] int count)
+        {
+            return Json(cacheHelper.GetMessages().OrderByDescending(i => i.Date).Skip(startIndex).Take(count), JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Message/Details/id
         public JsonResult Details(Guid id)
         {
