@@ -1,21 +1,27 @@
 ﻿using AisProjectASP.Models;
 using AisProjectASP.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Linq;
 
 namespace AisProjectASP.Tests.CacheTests
 {
-    [TestClass]
+    [TestFixture]
     public class MessagesTests
     {
         ICacheHelper helper = new CacheHelper();
 
-        [TestMethod]
+
+        [SetUp]
+        public void Init()
+        {
+            helper.CreateMessages();
+        }
+
+        [Test]
         public void CheckFirstMessagesSize()
         {
             //given
-            helper.CreateMessages();
             //when
             var listOfMessages = helper.GetMessages();
             //then
@@ -23,11 +29,11 @@ namespace AisProjectASP.Tests.CacheTests
             helper.ClearMessages();
         }
 
-        [TestMethod]
+        [Test]
         public void CheckAddingOneMessages()
         {
             //given
-            helper.CreateMessages();
+            // helper.CreateMessages();
             //when
             helper.SaveMessage(new Message(1111, "someTitle", "somebody", DateTime.Now));
             //then
@@ -35,11 +41,11 @@ namespace AisProjectASP.Tests.CacheTests
             helper.ClearMessages();
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldDeleteMessage()
         {
             //given
-            helper.CreateMessages();
+            //helper.CreateMessages();
             //when
             helper.DeleteMessage(5);
             //then
@@ -47,11 +53,11 @@ namespace AisProjectASP.Tests.CacheTests
             helper.ClearMessages();
         }
 
-        [TestMethod]
+        [Test]
         public void ShouldUpdateMessage()
         {
             //given
-            helper.CreateMessages();
+            //helper.CreateMessages();
             string newTitle = "newTitle123";
             string someBody = "someBody123";
             int initialId = 5;
