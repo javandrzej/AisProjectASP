@@ -24,7 +24,7 @@ namespace AisProjectASP.Tests.CacheTests
             //when
             var listOfMessages = helper.GetMessages();
             //then
-            Assert.AreEqual(Message.START_MESSAGE_SIZE, helper.GetMessages().Count);
+            Assert.AreEqual(MessagesManager.START_MESSAGE_SIZE, helper.GetMessages().Count);
             helper.ClearMessages();
         }
 
@@ -35,7 +35,7 @@ namespace AisProjectASP.Tests.CacheTests
             //when
             helper.SaveMessage(new Message(Guid.NewGuid(), "someTitle", "somebody", DateTime.Now));
             //then
-            Assert.AreEqual(Message.START_MESSAGE_SIZE + 1, helper.GetMessages().Count);
+            Assert.AreEqual(MessagesManager.START_MESSAGE_SIZE + 1, helper.GetMessages().Count);
             helper.ClearMessages();
         }
 
@@ -47,7 +47,7 @@ namespace AisProjectASP.Tests.CacheTests
             //when
             helper.DeleteMessage(message.Id);
             //then
-            Assert.AreEqual(Message.START_MESSAGE_SIZE - 1, helper.GetMessages().Count);
+            Assert.AreEqual(MessagesManager.START_MESSAGE_SIZE - 1, helper.GetMessages().Count);
             helper.ClearMessages();
         }
 

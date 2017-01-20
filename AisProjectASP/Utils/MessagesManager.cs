@@ -8,6 +8,7 @@ namespace AisProjectASP.Utils
 {
     public class MessagesManager : IMessagesManager
     {
+        public static readonly int START_MESSAGE_SIZE = 15;
         private ObjectCache cache = null;
         private string MessageKey { get { return "MessagesData"; } }
 
@@ -26,7 +27,7 @@ namespace AisProjectASP.Utils
 
         public void CreateMessages()
         {
-            cache.Add(MessageKey, Message.GetMessagesList().ToList(),
+            cache.Add(MessageKey, GetMessagesList().ToList(),
                new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.UtcNow.AddHours(1) });
         }
 
@@ -61,6 +62,11 @@ namespace AisProjectASP.Utils
         public void SetMessages(string key, object value)
         {
             cache.Set(key, value, new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.UtcNow.AddHours(1) });
+        }
+
+        private IEnumerable<Message> GetMessagesList()
+        {
+            return Enumerable.Range(1, START_MESSAGE_SIZE).Select(e => new Message(Guid.NewGuid(), "First title " + e, "Somebody " + e, DateTime.Now.Add(new TimeSpan(e, 0, 0, 0))));
         }
     }
 }
