@@ -5,7 +5,7 @@ namespace AisProjectASP.Models
 {
     public class Message
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
         public DateTime Date { get; set; }
@@ -16,7 +16,7 @@ namespace AisProjectASP.Models
 
         }
 
-        public Message(int id, string title, string body, DateTime date)
+        public Message(Guid id, string title, string body, DateTime date)
         {
             Id = id;
             Title = title;
@@ -28,7 +28,7 @@ namespace AisProjectASP.Models
         {
             for (var i = 1; i <= START_MESSAGE_SIZE; i++)
             {
-                yield return new Message(i, "first title" + i, "somebody" + i, DateTime.Now.Add(new TimeSpan(i, 0, 0, 0)));
+                yield return new Message(Guid.NewGuid(), "first title" + i, "somebody" + i, DateTime.Now.Add(new TimeSpan(i, 0, 0, 0)));
             }
         }
     }

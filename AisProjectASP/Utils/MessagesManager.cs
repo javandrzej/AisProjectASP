@@ -51,7 +51,7 @@ namespace AisProjectASP.Utils
             SetMessages(MessageKey, messagesList);
         }
 
-        public void DeleteMessage(int id)
+        public void DeleteMessage(Guid id)
         {
             var messagesList = GetMessages();
             messagesList.RemoveAll(a => a.Id == id);

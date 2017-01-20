@@ -1,5 +1,6 @@
 ﻿using AisProjectASP.Models;
 using AisProjectASP.Utils;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -31,7 +32,7 @@ namespace AisProjectASP.Controllers
         }
 
         // GET: Message/Details/id
-        public JsonResult Details(int id)
+        public JsonResult Details(Guid id)
         {
             return Json(cacheHelper.GetMessages().Where(i => i.Id == id), JsonRequestBehavior.AllowGet);
         }
@@ -39,8 +40,9 @@ namespace AisProjectASP.Controllers
         // POST: Message/Create
         public HttpResponseMessage Create([FromBody]Message msg)
         {
-            if (msg.Body != null && msg.Id > 0)
+            if (msg.Body != null && msg.Id.ToString() != string.Empty)
             {
+                msg.Id = Guid.NewGuid();
                 cacheHelper.SaveMessage(msg);
                 return new HttpResponseMessage(HttpStatusCode.Created);
             }
@@ -53,7 +55,7 @@ namespace AisProjectASP.Controllers
         // POST: Message/Update/
         public HttpResponseMessage Update([FromBody] Message msg)
         {
-            cacheHelper.UpdateMessage(msg); if (msg.Body != null && msg.Id > 0)
+            cacheHelper.UpdateMessage(msg); if (msg.Body != null && msg.Id.ToString() != string.Empty)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
@@ -62,9 +64,9 @@ namespace AisProjectASP.Controllers
         }
 
         // GET: Message/Delete/id
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(Guid id)
         {
-            if (id < 0)
+            if (id.ToString() == string.Empty)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }

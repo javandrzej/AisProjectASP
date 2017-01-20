@@ -11,7 +11,6 @@ namespace AisProjectASP.Tests.CacheTests
     {
         IMessagesManager helper = new MessagesManager();
 
-
         [SetUp]
         public void Init()
         {
@@ -33,9 +32,8 @@ namespace AisProjectASP.Tests.CacheTests
         public void CheckAddingOneMessages()
         {
             //given
-            // helper.CreateMessages();
             //when
-            helper.SaveMessage(new Message(1111, "someTitle", "somebody", DateTime.Now));
+            helper.SaveMessage(new Message(Guid.NewGuid(), "someTitle", "somebody", DateTime.Now));
             //then
             Assert.AreEqual(Message.START_MESSAGE_SIZE + 1, helper.GetMessages().Count);
             helper.ClearMessages();
@@ -45,9 +43,9 @@ namespace AisProjectASP.Tests.CacheTests
         public void ShouldDeleteMessage()
         {
             //given
-            //helper.CreateMessages();
+            var message = helper.GetMessages().Take(1).ToList().FirstOrDefault();
             //when
-            helper.DeleteMessage(5);
+            helper.DeleteMessage(message.Id);
             //then
             Assert.AreEqual(Message.START_MESSAGE_SIZE - 1, helper.GetMessages().Count);
             helper.ClearMessages();
@@ -57,10 +55,10 @@ namespace AisProjectASP.Tests.CacheTests
         public void ShouldUpdateMessage()
         {
             //given
-            //helper.CreateMessages();
+            var message = helper.GetMessages().Take(1).ToList().FirstOrDefault();
             string newTitle = "newTitle123";
             string someBody = "someBody123";
-            int initialId = 5;
+            Guid initialId = message.Id;
             //when
             helper.UpdateMessage(new Message(initialId, newTitle, someBody, DateTime.Now));
             Message msg = helper.GetMessages().FirstOrDefault(m => m.Id == initialId);
