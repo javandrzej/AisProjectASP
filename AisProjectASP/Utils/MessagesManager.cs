@@ -6,12 +6,12 @@ using System.Runtime.Caching;
 
 namespace AisProjectASP.Utils
 {
-    public class CacheHelper : ICacheHelper
+    public class MessagesManager : IMessagesManager
     {
         private ObjectCache cache = null;
         private string MessageKey { get { return "MessagesData"; } }
 
-        public CacheHelper()
+        public MessagesManager()
         {
             if (cache == null)
             {

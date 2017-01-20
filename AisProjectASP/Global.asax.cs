@@ -15,7 +15,7 @@ namespace AisProjectASP
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            ICacheHelper cacheHelper = new CacheHelper();
+            IMessagesManager cacheHelper = new MessagesManager();
             cacheHelper.CreateMessages();
         }
     }

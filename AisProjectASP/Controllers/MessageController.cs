@@ -10,7 +10,7 @@ namespace AisProjectASP.Controllers
 {
     public class MessageController : Controller
     {
-        private ICacheHelper cacheHelper = new CacheHelper();
+        private IMessagesManager cacheHelper = new MessagesManager();
 
         // GET: Message
         public ActionResult Index()

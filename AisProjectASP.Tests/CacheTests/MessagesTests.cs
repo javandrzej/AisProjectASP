@@ -9,7 +9,7 @@ namespace AisProjectASP.Tests.CacheTests
     [TestFixture]
     public class MessagesTests
     {
-        ICacheHelper helper = new CacheHelper();
+        IMessagesManager helper = new MessagesManager();
 
 
         [SetUp]

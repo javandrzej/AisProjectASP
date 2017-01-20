@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AisProjectASP.Utils
 {
-    public interface ICacheHelper
+    public interface IMessagesManager
     {
         List<Message> GetMessages();
         void SaveMessage(Message msg);
