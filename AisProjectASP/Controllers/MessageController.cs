@@ -6,7 +6,6 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
-
 namespace AisProjectASP.Controllers
 {
     public class MessageController : Controller
@@ -16,7 +15,8 @@ namespace AisProjectASP.Controllers
         // GET: Message
         public ActionResult Index()
         {
-            return View();
+            var result = new FilePathResult("~/Views/Message/Index.html", "text/html");
+            return result;
         }
 
         // GET: Message/GetMessages
@@ -44,31 +44,19 @@ namespace AisProjectASP.Controllers
         }
 
         // POST: Message/Create
-        public HttpResponseMessage Create([FromBody]Message msg)
+        public JsonResult Create([FromBody]Message msg)
         {
-            if (msg.Body != null && msg.Id.ToString() != string.Empty)
-            {
-                msg.Id = Guid.NewGuid();
-                cacheHelper.SaveMessage(msg);
-                return new HttpResponseMessage(HttpStatusCode.Created);
-            }
-            else
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
+            msg.Id = Guid.NewGuid();
+            cacheHelper.SaveMessage(msg);
+            return Json(msg);
         }
 
         // POST: Message/Update/
-        public HttpResponseMessage Update([FromBody] Message msg)
+        public JsonResult Update([FromBody] Message msg)
         {
-            cacheHelper.UpdateMessage(msg); if (msg.Body != null && msg.Id.ToString() != string.Empty)
-            {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            }
             cacheHelper.UpdateMessage(msg);
-            return new HttpResponseMessage(HttpStatusCode.Created);
+            return Json(msg);
         }
-
         // GET: Message/Delete/id
         public HttpResponseMessage Delete(Guid id)
         {

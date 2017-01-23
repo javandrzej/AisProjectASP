@@ -1,0 +1,40 @@
+﻿<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../../Content/Site.css">
+    <link rel="bootstrap" type="text/css" href="../../Content/bootstrap.css">
+    <link rel="bootstrap-min" type="text/css" href="../../Content/bootstrap.min.css">
+
+</head>
+
+    <body>
+        <h2>Top 10 Messages</h2>
+
+        <table id="tableId" class="table"></table>
+
+        <script src="../../Scripts/jquery-1.10.2.min.js"></script>
+
+        <script type="text/javascript">
+            function parseJsonDate(jsonDateString) {
+                return new Date(parseInt(jsonDateString.replace('/Date(', '')));
+            }
+            function getData() {
+                $.ajax({
+                    type: "GET",
+                    url: "GetMessages",
+                    dataType: "json"
+                })
+                .done(function (data) {
+                    $("#tableId").empty();
+                    $("#tableId").append("<th> Title </th> <th> Body </th> <th> Date</th>");
+                    for (i = 0; i < data.length; i++) {
+                        var newDate = parseJsonDate(data[i].Date).toLocaleDateString();
+                        $("#tableId").append("<tr><td>" + data[i].Title + "</td><td>" + data[i].Body + "</td><td>" + newDate + "</td></tr>");
+                    }
+                    setTimeout(getData, 5000);
+                });
+            }
+            getData();
+        </script>
+    </body>
+</html>
