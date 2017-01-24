@@ -15,6 +15,21 @@
         <script src="../../Scripts/jquery-1.10.2.min.js"></script>
 
         <script type="text/javascript">
+            function GetURLParameter(sParam)
+            {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+                console.log('url '+sPageURL);
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : sParameterName[1];
+                    }
+                }
+            };
             function parseJsonDate(jsonDateString) {
                 return new Date(parseInt(jsonDateString.replace('/Date(', '')));
             }
@@ -24,17 +39,43 @@
                     url: "http://localhost:49231/Message/GetMessages",
                     dataType: "json"
                 })
-                .done(function (data) {
-                    $("#tableId").empty();
-                    $("#tableId").append("<th> Title </th> <th> Body </th> <th> Date</th>");
-                    for (i = 0; i < data.length; i++) {
-                        var newDate = parseJsonDate(data[i].Date).toLocaleDateString();
-                        $("#tableId").append("<tr><td>" + data[i].Title + "</td><td>" + data[i].Body + "</td><td>" + newDate + "</td></tr>");
-                    }
-                    setTimeout(getData, 5000);
-                });
+                .done(writeData);
+            }
+            function getOlderData() {
+                var start = GetURLParameter('startIndex');
+                var count = GetURLParameter('count');
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:49231/Message/GetOlderMessagesWithParameters?startIndex=" + start+"&count="+count,
+                    dataType: "json"
+                })
+                .done(writeData);
+            }
+            function writeData(data)
+            {
+                $("#tableId").empty();
+                $("#tableId").append("<th> Title </th> <th> Body </th> <th> Date</th>");
+                for (i = 0; i < data.length; i++) {
+                    var newDate = parseJsonDate(data[i].Date).toLocaleDateString();
+                    $("#tableId").append("<tr><td>" + data[i].Title + "</td><td>" + data[i].Body + "</td><td>" + newDate + "</td></tr>");
+                }
+            }
+            function chooseDataToDistplay()
+            {
+                var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+                if(sPageURL === 'url')
+                {
+                    getData();
+                }else
+                {
+                    getOlderData();
+                }
             }
             getData();
+            setTimeout(chooseDataToDistplay, 1000);
         </script>
     </body>
 </html>
