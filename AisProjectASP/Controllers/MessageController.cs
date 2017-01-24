@@ -10,51 +10,44 @@ namespace AisProjectASP.Controllers
 {
     public class MessageController : Controller
     {
-        private IMessagesManager cacheHelper = new MessagesManager();
-
-        // GET: Message
-        public ActionResult Index()
-        {
-            var result = new FilePathResult("~/Views/Message/Index.html", "text/html");
-            return result;
-        }
+        private IMessagesManager massagesManager = new MessagesManager();
 
         // GET: Message/GetMessages
         public JsonResult GetMessages()
         {
-            return Json(cacheHelper.GetMessages().OrderByDescending(i => i.Date).Take(10), JsonRequestBehavior.AllowGet);
+            return Json(massagesManager.GetMessages().OrderByDescending(i => i.Date).Take(10), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Message/GetOlderMessages
         public JsonResult GetOlderMessages()
         {
-            return Json(cacheHelper.GetMessages().OrderByDescending(i => i.Date).Skip(10), JsonRequestBehavior.AllowGet);
+            return Json(massagesManager.GetMessages().OrderByDescending(i => i.Date).Skip(10), JsonRequestBehavior.AllowGet);
         }
 
         //GET: Message/GetOlderMessages?startIndex=12&count=2
         public JsonResult GetOlderMessagesWithParameters([FromUri] int startIndex, [FromUri] int count)
         {
-            return Json(cacheHelper.GetMessages().OrderByDescending(i => i.Date).Skip(startIndex).Take(count), JsonRequestBehavior.AllowGet);
+            return Json(massagesManager.GetMessages().OrderByDescending(i => i.Date).Skip(startIndex).Take(count), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Message/Details/id
         public JsonResult Details(Guid id)
         {
-            return Json(cacheHelper.GetMessages().Where(i => i.Id == id), JsonRequestBehavior.AllowGet);
+            return Json(massagesManager.GetMessages().Where(i => i.Id == id), JsonRequestBehavior.AllowGet);
         }
 
         // POST: Message/Create
         public JsonResult Create([FromBody]Message msg)
         {
             msg.Id = Guid.NewGuid();
-            cacheHelper.SaveMessage(msg);
+            massagesManager.SaveMessage(msg);
             return Json(msg);
         }
 
         // POST: Message/Update/
         public JsonResult Update([FromBody] Message msg)
         {
-            cacheHelper.UpdateMessage(msg);
+            massagesManager.UpdateMessage(msg);
             return Json(msg);
         }
         // GET: Message/Delete/id
@@ -64,7 +57,7 @@ namespace AisProjectASP.Controllers
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
-            cacheHelper.DeleteMessage(id);
+            massagesManager.DeleteMessage(id);
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
     }

@@ -21,7 +21,7 @@
             function getData() {
                 $.ajax({
                     type: "GET",
-                    url: "GetMessages",
+                    url: "http://localhost:49231/Message/GetMessages",
                     dataType: "json"
                 })
                 .done(function (data) {
